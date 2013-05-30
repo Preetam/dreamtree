@@ -100,6 +100,7 @@ height(Node* tree) {
 		return right_height+1;
 }
 
+/*
 Node*
 balance(Node* tree) {
 	if(tree == NULL) return NULL;
@@ -128,11 +129,69 @@ balance(Node* tree) {
 		root = insert_(root, tree);
 		return root;
 	}
+
+	tree->left = balance(tree->left);
+	tree->right = balance(tree->right);
+}
+*/
+
+Node*
+balance(Node* tree) {
+	if(tree == NULL) return NULL;
+	//tree->left = balance(tree->left);
+	//tree->right = balance(tree->right);
+
+	int left_height = height(tree->left);
+	int right_height = height(tree->right);
+/*
+	if( abs(left_height - right_height) < 2) {
+	//	printf("No change to: %s\n", tree->data);
+	}
+
+	else if( left_height <= right_height ) {
+	//	printf("%s is right-heavy\n", tree->data);
+		Node* root = tree->right;
+		tree->right = NULL;
+		root = insert_(root, tree);
+		tree = root;
+	}
+	else {
+	//	printf("%s is left-heavy\n", tree->data);
+		Node* root = tree->left;
+		tree->left = NULL;
+		root = insert_(root, tree);
+		tree = root;
+	}
+*/
+
+	while(abs(left_height - right_height) >= 2) {
+		
+		if( left_height <= right_height ) {
+		//	printf("%s is right-heavy\n", tree->data);
+			Node* root = tree->right;
+			tree->right = NULL;
+			root = insert_(root, tree);
+			tree = root;
+		}
+		else {
+		//	printf("%s is left-heavy\n", tree->data);
+			Node* root = tree->left;
+			tree->left = NULL;
+			root = insert_(root, tree);
+			tree = root;
+		}
+	
+		left_height = height(tree->left);
+		right_height = height(tree->right);
+	}
+	tree->left = balance(tree->left);
+	tree->right = balance(tree->right);
+	return tree;
 }
 
 void
 insert_many(Node* tree) {
-	for(int i = 55; i < 72; i++) {
+	for(int i = 0; i < 100000; i++) {
 		int* dat = malloc(sizeof(int));
 		*dat = i;
 		insert(tree, dat, sizeof(int));
@@ -145,12 +204,15 @@ int main() {
 	insert(t, "c", 1);
 	insert(t, "d", 1);
 	insert(t, "e", 1);
-	//insert_many(t);
-	traverse(t,0);
+	insert(t, "f", 1);
+	insert(t, "g", 1);
+	insert(t, "h", 1);
+	insert(t, "i", 1);
+	insert_many(t);
+	//traverse(t,0);
 	printf("Height: %d\n", height(t));
 	t = balance(t);
-	t = balance(t);
-	traverse(t, 0);
+	//traverse(t, 0);
 	printf("Height: %d\n", height(t));
 	printf("\n%s\n", t->data);
 	return 0;
