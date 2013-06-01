@@ -1,4 +1,4 @@
-package main;
+package dreamtree
 
 import (
 	"fmt"
@@ -124,34 +124,14 @@ func Balance(root *Node) *Node {
 	return root
 }
 
-func main() {
-	t := Create()
-	t.Root = Insert(t.Root, &Node{nil, nil, "b"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "d"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "a"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "c"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "e"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "f"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "g"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "h"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "i"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "j"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "k"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "l"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "m"})
-	t.Root = Insert(t.Root, &Node{nil, nil, "n"})
-	Traverse(t.Root, 0)
-	ch := make(chan int)
-	go func() {
-		Height(t.Root, ch)
-	}()
-	h := <-ch
-	fmt.Println("Height:", h)
+func (t *Tree) Insert(val string) {
+	t.Root = Insert(t.Root, &Node{nil, nil, val})
+}
+
+func (t *Tree) Balance() {
 	t.Root = Balance(t.Root)
-	go func() {
-		Height(t.Root, ch)
-	}()
-	h = <-ch
-	fmt.Println("Height:", h)
-	Traverse(t.Root, 0)
+}
+
+func (t *Tree) Height(ch chan int) {
+	Height(t.Root, ch)
 }

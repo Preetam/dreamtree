@@ -1,5 +1,4 @@
-test: tree.c
-	@$(CC) $^ -std=c99 -o $@
-	@./test
+test:
+	go test
 
 .PHONY: test
