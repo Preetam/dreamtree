@@ -12,7 +12,7 @@ type Tree struct {
 
 type Node struct {
 	Left, Right *Node
-	Value string
+	Value       string
 }
 
 func Create() *Tree {
@@ -21,12 +21,12 @@ func Create() *Tree {
 	return t
 }
 
-func Insert(root *Node, n *Node) (*Node) {
-	if(root == nil) {
+func Insert(root *Node, n *Node) *Node {
+	if root == nil {
 		return n
 	}
 
-	if(n.Value > root.Value) {
+	if n.Value > root.Value {
 		root.Right = Insert(root.Right, n)
 	} else {
 		root.Left = Insert(root.Left, n)
@@ -37,13 +37,13 @@ func Insert(root *Node, n *Node) (*Node) {
 }
 
 func Traverse(root *Node, padding int) {
-	if(root == nil) {
+	if root == nil {
 		return
 	}
 
 	Traverse(root.Left, padding+1)
 	tmp := padding
-	for (tmp > 0) {
+	for tmp > 0 {
 		fmt.Print("  ")
 		tmp--
 	}
@@ -52,8 +52,8 @@ func Traverse(root *Node, padding int) {
 }
 
 func Height(root *Node, ch chan int) {
-	if(root == nil) {
-		ch<-0
+	if root == nil {
+		ch <- 0
 		return
 	}
 
@@ -70,15 +70,15 @@ func Height(root *Node, ch chan int) {
 	h1 := <-c1
 	h2 := <-c2
 
-	if(h1 >= h2) {
-		ch<-h1+1
+	if h1 >= h2 {
+		ch <- h1 + 1
 	} else {
-		ch<-h2+1
+		ch <- h2 + 1
 	}
 }
 
 func Balance(root *Node) *Node {
-	if(root == nil) {
+	if root == nil {
 		return nil
 	}
 
@@ -95,8 +95,8 @@ func Balance(root *Node) *Node {
 	h1 := <-c1
 	h2 := <-c2
 
-	for math.Abs( (float64)(h1 - h2)) >= 2 {
-		if(h1 <= h2) {
+	for math.Abs((float64)(h1-h2)) >= 2 {
+		if h1 <= h2 {
 			newRoot := root.Right
 			root.Right = nil
 			Insert(newRoot, root)
