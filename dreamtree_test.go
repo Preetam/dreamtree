@@ -10,6 +10,11 @@ func Test1(test *testing.T) {
 	if t.Size != 0 {
 		test.Errorf("Nonzero size")
 	}
+
+	t.Insert("a")
+	if t.Size != 1 {
+		test.Errorf("Size didn't increase")
+	}
 }
 
 // Balance test 1

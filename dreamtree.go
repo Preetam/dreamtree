@@ -126,6 +126,7 @@ func Balance(root *Node) *Node {
 
 func (t *Tree) Insert(val string) {
 	t.Root = Insert(t.Root, &Node{nil, nil, val})
+	t.Size++
 }
 
 func (t *Tree) Balance() {
