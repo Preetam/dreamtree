@@ -152,9 +152,10 @@ func Height(root *Node, ch chan int) {
 	}
 }
 
-func Balance(root *Node) *Node {
+func Balance(root *Node, ch chan *Node) {
 	if root == nil {
-		return nil
+		ch <- nil
+		return
 	}
 
 	c1 := make(chan int)
@@ -194,9 +195,20 @@ func Balance(root *Node) *Node {
 		h1 = <-c1
 		h2 = <-c2
 	}
-	root.Left = Balance(root.Left)
-	root.Right = Balance(root.Right)
-	return root
+
+	leftCh := make(chan *Node)
+	rightCh := make(chan *Node)
+	go func() {
+		Balance(root.Left, leftCh)
+	}()
+
+	go func() {
+		Balance(root.Right, rightCh)
+	}()
+
+	root.Left = <-leftCh
+	root.Right = <-rightCh
+	ch <- root
 }
 
 func (t *Tree) Insert(val string) {
@@ -214,7 +226,11 @@ func (t *Tree) Remove(val string) {
 }
 
 func (t *Tree) Balance() {
-	t.Root = Balance(t.Root)
+	ch := make(chan *Node)
+	go func() {
+		Balance(t.Root, ch)
+	}()
+	t.Root = <-ch
 }
 
 func (t *Tree) Height(ch chan int) {

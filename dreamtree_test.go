@@ -108,3 +108,22 @@ func Test5(test *testing.T) {
 		test.Errorf("Balance didn't decrease height")
 	}
 }
+
+/*
+func Test6(test *testing.T) {
+	t := Create()
+	i := 0
+	var max int = 1e4
+	for i = 0; i < max; i++ {
+		t.Insert(string(i))
+	}
+
+	t.Balance()
+
+	if t.Size != max {
+		test.Errorf("Mass insert fail")
+	}
+
+	t.Balance()
+}
+*/
