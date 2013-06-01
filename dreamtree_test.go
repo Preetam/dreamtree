@@ -2,6 +2,7 @@ package dreamtree
 
 import (
 	"testing"
+	"strconv"
 )
 
 // Size test
@@ -109,13 +110,17 @@ func Test5(test *testing.T) {
 	}
 }
 
-/*
+
 func Test6(test *testing.T) {
 	t := Create()
 	i := 0
 	var max int = 1e4
 	for i = 0; i < max; i++ {
-		t.Insert(string(i))
+		t.Insert(strconv.Itoa(i))
+	}
+
+	if t.Size != max {
+		test.Errorf("Mass insert fail")
 	}
 
 	t.Balance()
@@ -124,6 +129,5 @@ func Test6(test *testing.T) {
 		test.Errorf("Mass insert fail")
 	}
 
-	t.Balance()
 }
-*/
+
