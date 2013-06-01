@@ -17,8 +17,55 @@ func Test1(test *testing.T) {
 	}
 }
 
-// Balance test 1
+// Insertion
 func Test2(test *testing.T) {
+	t := Create()
+	t.Insert("a")
+	t.Insert("f")
+	t.Insert("foo")
+	t.Insert("bar")
+
+	node := Get(t.Root, "f")
+	if node.Value != "f" {
+		test.Errorf("Get failure")
+	}
+
+	t.Remove("f")
+}
+
+// Deletion
+func Test3(test *testing.T) {
+	t := Create()
+	t.Insert("a")
+	t.Insert("f")
+	t.Insert("foo")
+	t.Insert("bar")
+
+	node := Get(t.Root, "f")
+	if node.Value != "f" {
+		test.Errorf("Get failure")
+	}
+
+	t.Remove("f")
+
+	node = Get(t.Root, "f")
+	if node != nil {
+		test.Errorf("Deletion failure")
+	}
+
+	if t.Size != 3 {
+		test.Errorf("Incorrect size")
+	}
+
+	t.Remove("f")
+
+	if t.Size != 3 {
+		test.Errorf("Incorrect size")
+	}
+}
+
+// Balance test 1
+func Test4(test *testing.T) {
 	t := Create()
 	t.Insert("b")
 	t.Insert("d")
@@ -41,7 +88,7 @@ func Test2(test *testing.T) {
 }
 
 // Balance test 2
-func Test3(test *testing.T) {
+func Test5(test *testing.T) {
 	t := Create()
 	t.Insert("a")
 	t.Insert("b")

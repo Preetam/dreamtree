@@ -36,6 +36,41 @@ func Insert(root *Node, n *Node) *Node {
 
 }
 
+func Remove(root *Node, n *Node) *Node {
+	if root == nil {
+		return nil
+	}
+
+	if n == nil {
+		return root
+	}
+
+	if root.Value == n.Value {
+		if root.Left == nil && root.Right == nil {
+			return nil
+		} else if root.Left == nil && root.Right != nil {
+			return root.Right
+		} else if root.Left != nil && root.Right == nil {
+			return root.Left
+		} else if root.Left != nil && root.Right != nil {
+			max := Max(root.Left)
+			root.Value = max.Value
+			root.Left = Remove(root.Left, max)
+			return root
+		}
+	}
+
+	if root.Value > n.Value {
+		root.Left = Remove(root.Left, n)
+	}
+
+	if root.Value < n.Value {
+		root.Right = Remove(root.Right, n)
+	}
+
+	return root
+}
+
 func Traverse(root *Node, padding int) {
 	if root == nil {
 		return
@@ -49,6 +84,46 @@ func Traverse(root *Node, padding int) {
 	}
 	fmt.Println(root.Value)
 	Traverse(root.Right, padding+1)
+}
+
+func Get(root *Node, val string) *Node {
+	if root == nil {
+		return nil
+	}
+
+	if root.Value > val {
+		return Get(root.Left, val)
+	}
+
+	if root.Value < val {
+		return Get(root.Right, val)
+	}
+
+	return root
+}
+
+func Max(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+
+	if root.Right == nil {
+		return root
+	}
+
+	return Max(root.Right)
+}
+
+func Min(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+
+	if root.Left == nil {
+		return root
+	}
+
+	return Max(root.Left)
 }
 
 func Height(root *Node, ch chan int) {
@@ -127,6 +202,15 @@ func Balance(root *Node) *Node {
 func (t *Tree) Insert(val string) {
 	t.Root = Insert(t.Root, &Node{nil, nil, val})
 	t.Size++
+}
+
+func (t *Tree) Remove(val string) {
+	node := Get(t.Root, val)
+	if node != nil {
+		t.Size--
+	}
+
+	t.Root = Remove(t.Root, node)
 }
 
 func (t *Tree) Balance() {
